@@ -1,0 +1,228 @@
+// clang-format off
+#ifndef TOK
+#define TOK(X)
+#endif
+
+#ifndef OP
+#define OP(X, Y) TOK(X)
+#endif
+
+#ifndef PPKEYWORD
+#define PPKEYWORD(X)
+#endif
+
+#ifndef KEYWORD
+#define KEYWORD(X, Y) TOK(KW_##X)
+#endif
+
+#ifndef CXX11_KEYWORD
+#define CXX11_KEYWORD(X, Y) KEYWORD(X, KEYCXX11 | (Y))
+#endif
+
+/*============== Preprocessor Directives =====================*/
+// Update Identifier::GetPPKeyword manually if something is added here
+PPKEYWORD(Invalid)  // Invalid keyword
+
+// Conditional Inclusions
+PPKEYWORD(If)
+PPKEYWORD(Ifdef)
+PPKEYWORD(Ifndef)
+PPKEYWORD(Elif)
+PPKEYWORD(Else)
+PPKEYWORD(Endif)
+
+// Source File Inclusion
+PPKEYWORD(Include)
+
+// Macro Replacement
+PPKEYWORD(Define)
+PPKEYWORD(Undef)
+
+// Line Control
+PPKEYWORD(Line)
+
+// Error Directive
+PPKEYWORD(Error)
+
+// Pragma Directive
+PPKEYWORD(Pragma)
+
+/*============== Operators ======================*/
+
+// C99
+OP(Question,            "?")
+OP(LParen,              "(")
+OP(RParen,              ")")
+OP(LSquare,             "[")
+OP(RSquare,             "]")
+OP(LBrace,              "{")
+OP(RBrace,              "}")
+OP(Period,              ".")
+OP(Ellipsis,            "...")
+OP(Amp,                 "&")
+OP(AmpEqual,            "&=")
+OP(AmpAmp,              "&&")
+OP(Star,                "*")
+OP(StarEqual,           "*=")
+OP(Plus,                "+")
+OP(PlusPlus,            "++")
+OP(PlusEqual,           "+=")
+OP(Minus,               "-")
+OP(MinusMinus,          "--")
+OP(MinusEqual,          "-=")
+OP(Tilde,               "~")
+OP(Exclaim,             "!")
+OP(ExclaimEqual,        "!=")
+OP(Percent,             "%")
+OP(PercentEqual,        "%=")
+OP(Less,                "<")
+OP(LessEqual,           "<=")
+OP(LessLess,            "<<")
+OP(LessLessEqual,       "<<=")
+OP(Greater,             ">")
+OP(Arrow,               "->")
+OP(GreaterEqual,        ">=")
+OP(GreaterGreater,      ">>")
+OP(GreaterGreaterEqual, ">>=")
+OP(Equal,               "=")
+OP(EqualEqual,          "==")
+OP(Caret,               "^")
+OP(CaretEqual,          "^=")
+OP(Pipe,                "|")
+OP(PipePipe,            "||")
+OP(PipeEqual,           "|=")
+OP(Colon,               ":")
+OP(Semi,                ";")
+OP(Comma,               ",")
+OP(Hash,                "#")
+OP(HashHash,            "##")
+
+// C++
+OP(PeriodStar,          ".*")
+OP(ColonColon,          "::")
+
+/*=============== Language Tokens =======================*/
+TOK(Unknown)                // Unknown token
+
+TOK(Eof)                    // End of file
+TOK(Eod)                    // End of Preprocessor directive (EOL inside a directive)
+
+TOK(Comment)                // Comment
+
+TOK(Identifier)             // abcde122
+
+// Numeric/FP constants
+TOK(NumericConstant)        // 0x122
+
+// Character constants
+TOK(CharacterConstant)      // 'a'
+TOK(WideCharConstant)       // L'b'
+
+TOK(Utf8CharacterConstant)  // u8'a'
+TOK(Utf16CharacterConstant) // u'a'
+TOK(Utf32CharacterConstant) // U'a'
+
+// String literals
+TOK(StringLiteral)          // "foo"
+TOK(WideStringLiteral)      // L"foo"
+
+TOK(Utf8StringLiteral)      // u8"foo"
+TOK(Utf16StringLiteral)     // u"foo"
+TOK(Utf32StringLiteral)     // U"foo"
+
+TOK(HeaderName)             // <foo> or "foo"
+
+/*=============== Language Keywords =======================*/
+// NOTE: They are case sensitive
+//
+// Flags allowed:
+//   KEYALL   - This is a keyword in all variants of C and C++, or it
+//              is a keyword in the implementation namespace that should
+//   KEYC99   - This is a keyword introduced to C in C99
+//   KEYC11   - This is a keyword introduced to C in C11
+//   KEYCXX   - This is a C++ keyword, or a C++-specific keyword in the
+//              implementation namespace
+KEYWORD(auto,               KEYALL)
+KEYWORD(break,              KEYALL)
+KEYWORD(case,               KEYALL)
+KEYWORD(char,               KEYALL)
+KEYWORD(const,              KEYALL)
+KEYWORD(continue,           KEYALL)
+KEYWORD(default,            KEYALL)
+KEYWORD(do,                 KEYALL)
+KEYWORD(double,             KEYALL)
+KEYWORD(else,               KEYALL)
+KEYWORD(enum,               KEYALL)
+KEYWORD(extern,             KEYALL)
+KEYWORD(float,              KEYALL)
+KEYWORD(for,                KEYALL)
+KEYWORD(goto,               KEYALL)
+KEYWORD(if,                 KEYALL)
+KEYWORD(int,                KEYALL)
+KEYWORD(_ExtInt,            KEYALL)
+KEYWORD(_BitInt,            KEYALL)
+KEYWORD(long,               KEYALL)
+KEYWORD(register,           KEYALL)
+KEYWORD(restrict,           KEYC99)
+KEYWORD(return,             KEYALL)
+KEYWORD(short,              KEYALL)
+KEYWORD(signed,             KEYALL)
+KEYWORD(static,             KEYALL)
+KEYWORD(struct,             KEYALL)
+KEYWORD(switch,             KEYALL)
+KEYWORD(typedef,            KEYALL)
+KEYWORD(union,              KEYALL)
+KEYWORD(unsigned,           KEYALL)
+KEYWORD(void,               KEYALL)
+KEYWORD(volatile,           KEYALL)
+KEYWORD(while,              KEYALL)
+KEYWORD(_Alignas,           KEYALL)
+KEYWORD(_Alignof,           KEYALL)
+KEYWORD(_Complex,           KEYALL)
+KEYWORD(_Generic,           KEYALL)
+KEYWORD(_Imaginary,         KEYALL)
+KEYWORD(_Noreturn,          KEYALL)
+KEYWORD(_Static_assert,     KEYALL)
+KEYWORD(_Thread_local,      KEYALL)
+KEYWORD(__func__,           KEYALL)
+
+// C++ Keywords
+KEYWORD(catch,              KEYCXX)
+KEYWORD(class,              KEYCXX)
+KEYWORD(const_cast,         KEYCXX)
+KEYWORD(delete,             KEYCXX)
+KEYWORD(dynamic_cast,       KEYCXX)
+KEYWORD(explicit,           KEYCXX)
+KEYWORD(false,              KEYCXX)
+KEYWORD(friend,             KEYCXX)
+KEYWORD(mutable,            KEYCXX)
+KEYWORD(namespace,          KEYCXX)
+KEYWORD(new,                KEYCXX)
+KEYWORD(operator,           KEYCXX)
+KEYWORD(private,            KEYCXX)
+KEYWORD(protected,          KEYCXX)
+KEYWORD(public,             KEYCXX)
+KEYWORD(reinterpret_cast,   KEYCXX)
+KEYWORD(static_cast,        KEYCXX)
+KEYWORD(template,           KEYCXX)
+KEYWORD(this,               KEYCXX)
+KEYWORD(throw,              KEYCXX)
+KEYWORD(try,                KEYCXX)
+KEYWORD(true,               KEYCXX)
+KEYWORD(typeid,             KEYCXX)
+KEYWORD(typename,           KEYCXX)
+KEYWORD(using,              KEYCXX)
+KEYWORD(virtual,            KEYCXX)
+
+// C++11 Keywords
+CXX11_KEYWORD(alignas,      0)
+CXX11_KEYWORD(constexpr,    0)
+CXX11_KEYWORD(noexcept,     0)
+CXX11_KEYWORD(nullptr,      0)
+CXX11_KEYWORD(thread_local, 0)
+
+#undef PPKEYWORD
+#undef CXX11_KEYWORD
+#undef KEYWORD
+#undef PUNCTUATOR
+#undef TOK
