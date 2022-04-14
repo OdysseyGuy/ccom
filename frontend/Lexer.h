@@ -72,12 +72,20 @@ private:
       Size = 1;
       return *Ptr;
     }
+
+    Size = 0;
+    return PeekCharSlow(Ptr, Size);
   }
 
   const char *ConsumeChar(const char *Ptr, unsigned Size, Token &Tok) {
     if (Size == 1) {
       return Ptr + Size;
     }
+
+    // re-lex the character with a current token
+    Size = 0;
+    PeekCharSlow(Ptr, Size, &Tok);
+    return Ptr + Size;
   }
 
   /**
@@ -87,6 +95,11 @@ private:
     if (!IsSpecialCharacter(Ptr[0])) {
       return *Ptr++;
     }
+
+    unsigned Size = 0;
+    char C = PeekCharSlow(Ptr, Size, &Tok);
+    Ptr += Size;
+    return C;
   }
 
   /** Is some kind of special character */
@@ -98,7 +111,7 @@ private:
    * Slower alternative for inlined PeekChar. Works on trigraphs and escape
    * sequences.
    */
-  void PeekCharSlow(const char *Ptr, unsigned &Size);
+  char PeekCharSlow(const char *Ptr, unsigned &Size, Token *Tok = nullptr);
 
   bool IsHexLiteral(const char *Start, const LanguageOptions &LangOptions);
 

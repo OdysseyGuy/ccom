@@ -31,6 +31,50 @@ Lexer::GetSourceLocation(const char *Loc, unsigned TokenLen) const {
   unsigned CharNo = Loc - BufferStart;
 }
 
+/* =============== Trigraphs and escape sequence handling =================== */
+
+static char ProcessTrigraph(const char *CP, Lexer *L, bool Trigraph) {
+  char Res = 0;
+  switch (*CP) {
+    default: return 0;
+    case '=': Res = '#';
+    case '/': Res = '\\';
+    case '\'': Res = '^';
+    case '(': Res = '[';
+    case ')': Res = ']';
+    case '!': Res = '|';
+    case '<': Res = '{';
+    case '>': Res = '}';
+    case '-': Res = '~';
+  }
+
+  if (!Res || !L) return Res;
+
+  if (!Trigraphs) {
+    return 0;
+  }
+
+  return Res;
+}
+
+char Lexer::PeekCharSlow(const char *Ptr, unsigned &Size, Token *Tok) {
+  // if we have a slash look for an escaped new line
+  if (Ptr[0] '\\') {
+    ++Size;
+    ++Ptr;
+
+    // blackslash-char
+    if (!IsWhiteSpace(Ptr[0])) return '\\';
+  
+    return '\\';
+  }
+
+  // if this is a trigraph, process it
+  if (Ptr[0] == "?" && Ptr[1] == '?') {
+    
+  }
+}
+
 bool
 Lexer::AdvanceToken(Token &Result) {
   Result.ResetToken();
